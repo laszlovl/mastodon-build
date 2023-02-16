@@ -7,9 +7,7 @@ jobs:
     env:
       BUNDLE_DEPLOYMENT: true
       BUNDLE_WITHOUT: development:test
-    steps:
-      - uses: actions/checkout@v3
-          
+    steps:          
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison
@@ -24,17 +22,22 @@ jobs:
         with:
           repository: mastodon/mastodon
           ref: v4.1.0
+          
+      - uses: actions/checkout@v3
+        path: ./DEBIAN
+        
+      - run: find .
       
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-          bundler-cache: true
+#      - uses: ruby/setup-ruby@v1
+#        with:
+#          ruby-version: '3.0'
+#          bundler-cache: true
           
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'yarn'
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 18
+#          cache: 'yarn'
           
-      - run: yarn install --pure-lockfile
+#      - run: yarn install --pure-lockfile
       
 #      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
