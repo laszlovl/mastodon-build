@@ -7,8 +7,6 @@ jobs:
     env:
       BUNDLE_DEPLOYMENT: true
       BUNDLE_WITHOUT: development:test
-      RAILS_ENV: production
-      NODE_OPTIONS: --openssl-legacy-provider # because of an issue with node 18
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -32,6 +30,6 @@ jobs:
           
       - run: yarn install --pure-lockfile
       
-      - run: bundle exec rails assets:precompile
+      - run: RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
       
 
