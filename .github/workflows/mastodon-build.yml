@@ -24,24 +24,30 @@ jobs:
         with:
           repository: mastodon/mastodon
           ref: v4.1.0
-          path: ./opt/mastodon
+          path: ./deb/opt/mastodon
       
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
           bundler-cache: true
-          working-directory: ./opt/mastodon
+          working-directory: ./deb/opt/mastodon
         
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'yarn'
-          cache-dependency-path: ./opt/mastodon/yarn.lock  
+          cache-dependency-path: ./deb/opt/mastodon/yarn.lock
 
 #      - run: yarn install --pure-lockfile
       
 #      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
 
-      - run: dpkg-deb --build --root-owner-group . .
+      - run: rm -rf ./deb/.git
+      - run: dpkg-deb --build --root-owner-group deb .
 
       - run: dpkg-deb -c *.deb
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mastodon_4.1.0_amd64.deb
+          path: mastodon_4.1.0_amd64.deb
