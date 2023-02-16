@@ -30,6 +30,6 @@ jobs:
           
       - run: yarn install --pure-lockfile
       
-      - run: RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+      - run: OTP_SECRET=asdf RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
       
 
