@@ -29,6 +29,8 @@ jobs:
           repository: mastodon/mastodon
           ref: v4.1.0
           path: ./deb/opt/mastodon
+          
+      - run: find .
       
       - uses: ruby/setup-ruby@v1
         with:
