@@ -40,11 +40,13 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: ./deb/opt/mastodon/yarn.lock
 
-#      - run: yarn install --pure-lockfile
-      
-#      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+      - run: yarn install --pure-lockfile
+        working-directory: ./deb/opt/mastodon
+     
+      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+        working-directory: ./deb/opt/mastodon
 
-      - run: rm -rf ./deb/.git
+      - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git ./deb/*.MD
       - run: dpkg-deb --build --root-owner-group deb .
 
       - run: dpkg-deb -c *.deb
