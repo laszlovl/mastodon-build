@@ -18,17 +18,19 @@ jobs:
           packages: libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev
           version: 1.0
           
-      - uses: actions/checkout@v3
-        with:
-          repository: mastodon/mastodon
-          ref: v4.1.0
-          path: ./deb/
+
           
       - uses: actions/checkout@v3
         with:
           repository: mastodon/mastodon
           ref: v4.1.0
           path: ./deb/opt/mastodon
+          
+      - uses: actions/checkout@v3
+        with:
+          repository: mastodon/mastodon
+          ref: v4.1.0
+          path: ./deb/
           
       - run: find .
       
