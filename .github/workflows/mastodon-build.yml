@@ -4,6 +4,9 @@ on: [push]
 jobs:
   mastodon-build:
     runs-on: ubuntu-22.04
+    env:
+      BUNDLE_DEPLOYMENT: true
+      BUNDLE_WITHOUT: development:test
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -14,10 +17,6 @@ jobs:
         with:
           repository: mastodon/mastodon
           ref: v4.1.0
-          
-      - run: mkdir .bundle
-      - run: echo 'BUNDLE_DEPLOYMENT: "true"' > .bundle/config
-      - run: echo 'BUNDLE_WITHOUT: "development:test"' >> .bundle/config
       
       - uses: ruby/setup-ruby@v1
         with:
