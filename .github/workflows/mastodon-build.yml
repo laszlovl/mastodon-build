@@ -1,0 +1,16 @@
+name: Mastodon build
+run-name: Mastodon build
+on: [push]
+jobs:
+  mastodon-build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev imagemagick ffmpeg file python3-psycopg2
+          version: 1.0
+
+      - uses: actions/checkout@v3
+        with:
+          repository: mastodon/mastodon
+          ref: v4.1.0
