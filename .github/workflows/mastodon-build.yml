@@ -7,10 +7,26 @@ jobs:
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev imagemagick ffmpeg file python3-psycopg2
+          packages: ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev imagemagick ffmpeg file
           version: 1.0
 
       - uses: actions/checkout@v3
         with:
           repository: mastodon/mastodon
           ref: v4.1.0
+          
+      - run: mkdir .bundle
+      - run: echo 'BUNDLE_DEPLOYMENT: "true"' > .bundle/config
+      - run: echo 'BUNDLE_WITHOUT: "development:test"' >> .bundle/config
+      
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+          
+      - run: yarn install --pure-lockfile
