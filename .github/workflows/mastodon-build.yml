@@ -42,6 +42,6 @@ jobs:
       
 #      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
 
+      - run: dpkg-deb --build --root-owner-group . .
 
-
-      - run: find .
+      - run: dpkg-deb -c *.deb

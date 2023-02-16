@@ -1,0 +1,6 @@
+Package: mastodon
+Version: 1.0
+Architecture: amd64
+Maintainer: Las <git@tootnet.nl>
+Description: mastodon
+
