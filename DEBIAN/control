@@ -1,5 +1,5 @@
-Package: mastodon
-Version: 4.1.0
+Package: mastodon-core
+Version: 4.0.2
 Architecture: amd64
 Maintainer: Las <git@tootnet.nl>
 Description: mastodon

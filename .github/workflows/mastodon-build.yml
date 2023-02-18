@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: mastodon/mastodon
-          ref: v4.1.0
+          ref: v4.0.2
           path: ./deb/opt/mastodon
       
       - uses: ruby/setup-ruby@v1
@@ -45,7 +45,8 @@ jobs:
      
       - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
         working-directory: ./deb/opt/mastodon
-
+        
+      - run: rm -rf ./deb/opt/mastodon/node_modules
       - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git ./deb/*.MD
       - run: dpkg-deb --build --root-owner-group deb .
 
@@ -53,5 +54,5 @@ jobs:
       
       - uses: actions/upload-artifact@v3
         with:
-          name: mastodon_4.1.0_amd64.deb
-          path: mastodon_4.1.0_amd64.deb
+          name: mastodon-core_4.0.2_amd64.deb
+          path: mastodon-core_4.0.2_amd64.deb
