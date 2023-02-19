@@ -3,4 +3,4 @@ Version: 4.0.2
 Architecture: amd64
 Maintainer: Las <git@tootnet.nl>
 Description: mastodon
-
+Depends: libxml2, libxslt1.1, libgdbm6, libreadline8, libprotobuf23, libssl3, libyaml-0-2, libffi8, libicu70, libjemalloc2, zlib1g, libidn12, libpq5, imagemagick, ffmpeg, file

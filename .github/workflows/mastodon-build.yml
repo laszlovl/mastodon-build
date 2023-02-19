@@ -46,7 +46,6 @@ jobs:
       - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
         working-directory: ./deb/opt/mastodon
         
-      - run: rm -rf ./deb/opt/mastodon/node_modules
       - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git ./deb/*.MD
       - run: dpkg-deb --build --root-owner-group deb .
 
