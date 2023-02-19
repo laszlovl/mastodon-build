@@ -4,18 +4,12 @@ on: [push]
 jobs:
   mastodon-build:
     runs-on: ubuntu-22.04
-    env:
-      BUNDLE_DEPLOYMENT: true
-      BUNDLE_WITHOUT: development:test
-    steps:          
+    steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison
-          version: 1.0
-
-      - uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev
+          packages: >
+            ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison
+            libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev
           version: 1.0
           
       - uses: actions/checkout@v3
@@ -36,16 +30,19 @@ jobs:
 
       - run: sudo gem install bundler
 
-      - run: bundle install
+      - run: bundle config deployment 'true'
         working-directory: ./deb/opt/mastodon
 
-#      - run: yarn install --pure-lockfile
-#        working-directory: ./deb/opt/mastodon
+      - run: bundle config without 'development test'
+        working-directory: ./deb/opt/mastodon
+
+      - run: bundle install
+        working-directory: ./deb/opt/mastodon
      
       - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
         working-directory: ./deb/opt/mastodon
         
-      - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git ./deb/*.MD
+      - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git
       - run: dpkg-deb --build --root-owner-group deb .
       
       - uses: actions/upload-artifact@v3
