@@ -1,0 +1,62 @@
+name: Mastodon build
+
+run-name: Mastodon build
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  mastodon-build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: >
+            ruby ruby-dev gcc build-essential g++ protobuf-compiler autoconf bison
+            libxml2-dev libxslt1-dev libgdbm-dev libreadline-dev libprotobuf-dev libssl-dev libyaml-dev libffi-dev libicu-dev libjemalloc-dev zlib1g-dev libidn11-dev libpq-dev
+          version: 1.0
+          
+      - uses: actions/checkout@v3
+        with:
+          path: ./deb/
+          
+      - uses: actions/checkout@v3
+        with:
+          repository: mastodon/mastodon
+          ref: v4.0.2
+          path: ./deb/opt/mastodon
+        
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+          cache-dependency-path: ./deb/opt/mastodon/yarn.lock
+
+      - run: sudo gem install bundler
+
+      - run: bundle config deployment 'true'
+        working-directory: ./deb/opt/mastodon
+
+      - run: bundle config without 'development test'
+        working-directory: ./deb/opt/mastodon
+
+      - run: bundle install
+        working-directory: ./deb/opt/mastodon
+     
+      - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+        working-directory: ./deb/opt/mastodon
+        
+      - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git
+      - run: dpkg-deb --build --root-owner-group deb .
+      
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: mastodon-core_4.0.2_amd64.deb
+#          path: mastodon-core_4.0.2_amd64.deb
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: mastodon-core_4.0.2_amd64.deb
