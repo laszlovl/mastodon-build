@@ -27,12 +27,6 @@ jobs:
           repository: mastodon/mastodon
           ref: v4.0.2
           path: ./deb/opt/mastodon
-      
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-          bundler-cache: true
-          working-directory: ./deb/opt/mastodon
         
       - uses: actions/setup-node@v3
         with:
@@ -40,16 +34,19 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: ./deb/opt/mastodon/yarn.lock
 
-      - run: yarn install --pure-lockfile
+      - run: sudo gem install bundler
+
+      - run: bundle install
         working-directory: ./deb/opt/mastodon
+
+#      - run: yarn install --pure-lockfile
+#        working-directory: ./deb/opt/mastodon
      
       - run: OTP_SECRET=x SECRET_KEY_BASE=x RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
         working-directory: ./deb/opt/mastodon
         
       - run: rm -rf ./deb/.git ./deb/opt/mastodon/.git ./deb/*.MD
       - run: dpkg-deb --build --root-owner-group deb .
-
-      - run: dpkg-deb -c *.deb
       
       - uses: actions/upload-artifact@v3
         with:
