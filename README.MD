@@ -1,4 +1,4 @@
-This repository compiles Mastodon into a ready-to-use deb package, all using github actions. The resulting deb is automatically published as a release asset (see https://github.com/laszlovl/mastodon-build/releases) and because github itself is not accessible over ipv6, the latest version is also published to github pages (see https://laszlovl.github.io/mastodon-build/mastodon-core_4.1.3_amd64.deb).
+This repository compiles Mastodon into a ready-to-use deb package, all using github actions. The resulting deb is automatically published as a release asset (see https://github.com/laszlovl/mastodon-build/releases) and because github itself is not accessible over ipv6, the latest version is also published to github pages (see https://laszlovl.github.io/mastodon-build/mastodon-core_4.1.4_amd64.deb).
 
 Installing this package will deploy Mastodon's source code and the compiled assets into `/opt/mastodon`, but it doesn't provide configuration or service definitions. For automated deployment of a full-fledged Mastodon environment, refer to https://github.com/laszlovl/mastodon-ansible-scalable.
 
