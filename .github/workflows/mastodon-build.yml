@@ -8,7 +8,7 @@ on:
       - "v*.*.*"
       
 env:
-  MASTODON_VERSION: 4.1.6
+  MASTODON_VERSION: 4.1.8
 
 jobs:
   mastodon-build:
