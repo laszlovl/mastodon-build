@@ -8,7 +8,7 @@ on:
       - "v*.*.*"
       
 env:
-  MASTODON_VERSION: 4.2.1
+  MASTODON_VERSION: 4.2.8
 
 jobs:
   mastodon-build:
@@ -42,6 +42,9 @@ jobs:
           node-version: 18
           cache: 'yarn'
           cache-dependency-path: ./binary/opt/mastodon/yarn.lock
+      
+      - run: yarn install --pure-lockfile
+        working-directory: ./binary/opt/mastodon
 
       - run: sudo gem install bundler
 
